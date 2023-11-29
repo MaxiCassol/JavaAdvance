@@ -1,5 +1,6 @@
 package CRUD;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -44,13 +45,25 @@ public class EjemploUpdate {
 
     // Método para obtener la conexión a la base de datos
     private Connection obtenerConexion() {
-        // Implementación para obtener la conexión (omitida en el ejemplo)
-        // ...
+        Connection connection = null;
+        try {
+            // Aquí debes proporcionar la URL de conexión, el usuario y la contraseña de tu base de datos
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tu_base_de_datos", "usuario", "contrasena");
+        } catch (SQLException e) {
+            // Manejo de excepciones (puedes imprimir o registrar el error)
+            e.printStackTrace();
+        }
+        return connection;
     }
 
     // Método para cerrar la conexión a la base de datos
     private void cerrarConexion(Connection conn) {
-        // Implementación para cerrar la conexión (omitida en el ejemplo)
-        // ...
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

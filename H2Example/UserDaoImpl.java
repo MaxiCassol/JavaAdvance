@@ -1,6 +1,8 @@
 package H2Example;
+/*
+import H2Example.UserDto;
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements UserDto {
     private UserRepository userRepository; // Repositorio que interactúa con la capa de persistencia
 
     // Constructor u otras formas de inyección de dependencias para obtener el repositorio UserRepository
@@ -36,4 +38,7 @@ public class UserDaoImpl implements UserDao {
     private UserEntity mapDtoToEntity(UserDto userDto) {
         // Lógica de mapeo
     }
-}
+    */
+
+
+

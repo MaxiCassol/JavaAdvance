@@ -1,6 +1,6 @@
 package almacen;
 
-class Producto implements Comparable<Producto> {
+public class Producto implements Comparable<Producto> {
     private String nombre;
     private String descripcion;
     private double precio;
