@@ -1,5 +1,6 @@
 package com.gastos2023.repository;
 
+import com.gastos2023.exception.DAOException;
 import com.gastos2023.model.Gasto;
 
 import java.util.List;
@@ -13,5 +14,5 @@ public interface GastoRepository{
 
     int actualizarGasto(Long id, Gasto gasto);
 
-    void borrarGasto(Long id);
+    void borrarGasto(Long id) throws DAOException;
 }

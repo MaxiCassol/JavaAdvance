@@ -1,6 +1,6 @@
-package com.gastos2023.dto;
+package com.gastos2023.dto.request;
 
-public class GastoDTO {
+public class GastoRequestDTO {
     private String descripcion;
     private double monto;
 
@@ -8,6 +8,15 @@ public class GastoDTO {
 
     private String categoria;
 
+    public GastoRequestDTO() {
+    }
+
+    public GastoRequestDTO(String descripcion, double monto, String fecha, String categoria) {
+        this.descripcion = descripcion;
+        this.monto = monto;
+        this.fecha = fecha;
+        this.categoria = categoria;
+    }
 
     public String getFecha() {
         return fecha;
@@ -32,11 +41,22 @@ public class GastoDTO {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
     public void setMonto(double monto) {
         this.monto = monto;
+    }
+
+    @Override
+    public String toString() {
+        return "Gasto{" +
+                ", descripcion=" + descripcion + '\'' +
+                ", monto=" + monto +
+                ", fecha=" + fecha + '\'' +
+                ", categoria='" + categoria +
+                '}';
     }
 }

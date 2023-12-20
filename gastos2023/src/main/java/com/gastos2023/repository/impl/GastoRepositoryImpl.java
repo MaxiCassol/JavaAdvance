@@ -1,25 +1,26 @@
-package com.gastos2023.repository;
+package com.gastos2023.repository.impl;
 
 import com.gastos2023.exception.DAOException;
 import com.gastos2023.model.Gasto;
-import org.springframework.dao.DataAccessException;
+import com.gastos2023.repository.GastoRepository;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class GastoRepositoryImpl implements GastoRepository{
+public class GastoRepositoryImpl implements GastoRepository {
 
     // Sentencias SQL en constantes
-    private static final String ACTUALIZAR_GASTO_POR_ID = "UPDATE Expense SET amount = ?, category_name = ?, date = ? WHERE id = ?";
-    private static final String INSERTAR_GASTO = "INSERT INTO Expense (amount, category_id, category_name, date) VALUES (?, ?, ?, ?)";
-    private static final String BORRAR_GASTO_POR_ID = "DELETE FROM Expense WHERE id = ?";
-    private static final String OBTENER_TODOS_LOS_GASTOS = "SELECT * FROM Expense";
-    private static final String OBTENER_GASTO_POR_ID = "SELECT * FROM Expense WHERE id = ?";
+    private static final String ACTUALIZAR_GASTO_POR_ID = "UPDATE Gasto SET descripcion = ?, monto = ?, fecha = ?, categoria = ? WHERE id = ?";
+    private static final String INSERTAR_GASTO = "INSERT INTO Gasto (descripcion, monto, fecha, categoria) VALUES (?, ?, ?, ?)";
+    private static final String BORRAR_GASTO_POR_ID = "DELETE FROM Gasto WHERE id = ?";
+    private static final String OBTENER_TODOS_LOS_GASTOS = "SELECT * FROM Gasto";
+    private static final String OBTENER_GASTO_POR_ID = "SELECT * FROM Gasto WHERE id = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -29,10 +30,12 @@ public class GastoRepositoryImpl implements GastoRepository{
 
     @Override
     public int insertarGasto(Gasto gasto) {
+        System.out.println("Insertando el nuevo gasto");
+
         return jdbcTemplate.update(INSERTAR_GASTO,
+                gasto.getDescripcion(),
                 gasto.getMonto(),
                 gasto.getFecha(),
-                gasto.getDescripcion(),
                 gasto.getCategoria());
     }
 
@@ -57,16 +60,20 @@ public class GastoRepositoryImpl implements GastoRepository{
 
     @Override
     public int actualizarGasto(Long id, Gasto gasto) {
-        System.out.println("Actualizando la presentación");
-        return jdbcTemplate.update(ACTUALIZAR_GASTO_POR_ID,
+        System.out.println("Actualizando el gasto");
+        int gastoActualizado = jdbcTemplate.update(ACTUALIZAR_GASTO_POR_ID,
+                gasto.getDescripcion(),
                 gasto.getMonto(),
-                gasto.getCategoria(),
                 gasto.getFecha(),
+                gasto.getCategoria(),
                 id);
+        System.out.println("Gasto Actualizado");
+        return gastoActualizado;
+
     }
 
     @Override
-    public void borrarGasto(Long id) {
+    public void borrarGasto(Long id) throws DAOException {
         System.out.println("Se elimina el gasto con ID: " + id);
         // Manejamos un try/catch para que, en caso de error al ejecutar la sentencia SQL de delete, arrojemos una excepción customizada
         try {
@@ -90,5 +97,4 @@ public class GastoRepositoryImpl implements GastoRepository{
             return new Gasto(id, descripcion, monto, fecha, categoria);
         }
     }
-
 }

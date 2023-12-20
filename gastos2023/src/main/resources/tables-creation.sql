@@ -1,9 +1,7 @@
-
-
 CREATE TABLE IF NOT EXISTS Gasto (
-    id LONG PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    descripcion VARCHAR(60),
     monto DOUBLE NOT NULL,
-    categoria VARCHAR(30) NOT NULL,
     fecha VARCHAR(20),
-    descripcion VARCHAR(60)
+    categoria VARCHAR(30) NOT NULL
 );

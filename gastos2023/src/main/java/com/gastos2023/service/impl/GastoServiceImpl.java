@@ -1,7 +1,8 @@
 package com.gastos2023.service.impl;
 
 
-import com.gastos2023.dto.GastoDTO;
+import com.gastos2023.dto.request.GastoRequestDTO;
+import com.gastos2023.dto.response.GastoResponseDTO;
 import com.gastos2023.model.Gasto;
 import com.gastos2023.repository.GastoRepository;
 import com.gastos2023.service.GastoService;
@@ -20,22 +21,22 @@ public class GastoServiceImpl implements GastoService {
     }
 
     @Override
-    public Gasto insertarGasto(GastoDTO gastoDTO) {
+    public Gasto insertarGasto(GastoRequestDTO gastoRequestDTO) {
         String response = "Se registro el gasto con exito";
 
-        Gasto gasto = mapDtoToGasto(gastoDTO);
+        Gasto gasto = mapDtoToGasto(gastoRequestDTO);
         gastoRepository.insertarGasto(gasto);
         return null;
     }
 
     @Override
-    public List<Gasto> obtenerTodosLosGastos() {
+    public List<GastoResponseDTO> obtenerTodosLosGastos() {
         // Lógica de negocio para obtener todos los gastos
         return null;
     }
 
     @Override
-    public Gasto actualizarGasto(Long id, GastoDTO gastoDTO) {
+    public Gasto actualizarGasto(Long id, GastoRequestDTO gastoRequestDTO) {
         // Lógica de negocio para actualizar un gasto
         return null;
     }
@@ -45,12 +46,17 @@ public class GastoServiceImpl implements GastoService {
         // Lógica de negocio para borrar un gasto
     }
 
-    private Gasto mapDtoToGasto(GastoDTO gastoDTO){
+    @Override
+    public GastoResponseDTO obtenerGastoPorId(Long id) {
+        return null;
+    }
+
+    private Gasto mapDtoToGasto(GastoRequestDTO gastoRequestDTO){
         Gasto gasto = new Gasto();
-        gasto.setMonto(gastoDTO.getMonto());
-        gasto.setDescripcion(gastoDTO.getDescripcion());
-        gasto.setFecha(gastoDTO.getFecha());
-        gasto.setCategoria(gastoDTO.getCategoria());
+        gasto.setMonto(gastoRequestDTO.getMonto());
+        gasto.setDescripcion(gastoRequestDTO.getDescripcion());
+        gasto.setFecha(gastoRequestDTO.getFecha());
+        gasto.setCategoria(gastoRequestDTO.getCategoria());
         return gasto;
     }
 }
