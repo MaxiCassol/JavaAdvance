@@ -88,13 +88,14 @@ public class GastoRepositoryImpl implements GastoRepository {
     static class GastoRowMapper implements RowMapper<Gasto> {
         @Override
         public Gasto mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            long id = resultSet.getLong("id");
-            String descripcion = resultSet.getString("descripcion");
-            double monto = resultSet.getDouble("monto");
-            String fecha = resultSet.getString("fecha");
-            String categoria = resultSet.getString("categoria");
+            Gasto gasto =new Gasto();
+            gasto.setId(resultSet.getLong("id"));
+            gasto.setDescripcion(resultSet.getString("descripcion"));
+            gasto.setMonto(resultSet.getDouble("monto"));
+            gasto.setFecha(resultSet.getString("fecha"));
+            gasto.setCategoria(resultSet.getString("categoria"));
 
-            return new Gasto(id, descripcion, monto, fecha, categoria);
+            return gasto;
         }
     }
 }

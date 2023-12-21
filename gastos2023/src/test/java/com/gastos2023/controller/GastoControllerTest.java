@@ -1,9 +1,9 @@
 package com.gastos2023.controller;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gastos2023.dto.request.GastoRequestDTO;
 import com.gastos2023.dto.response.GastoResponseDTO;
 import com.gastos2023.exception.DAOException;
-import com.gastos2023.model.Gasto;
 import com.gastos2023.service.GastoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,20 +11,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class GastoControllerTest {
-
     @Mock
     private GastoService gastoService;
 
@@ -38,28 +34,20 @@ class GastoControllerTest {
         MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
     }
-
     @Test
-    void testCrearGasto() throws Exception {
-        GastoRequestDTO gastoRequestDTO = new GastoRequestDTO();
-        gastoRequestDTO.setDescripcion("Compra de alimentos");
-        gastoRequestDTO.setMonto(50.0);
-        gastoRequestDTO.setFecha("2023-12-20");
-        gastoRequestDTO.setCategoria("Alimentos");
+    void testCrearGasto() {
+        // Arrange
+        GastoRequestDTO gastoRequestDTO = new GastoRequestDTO(/* Provide necessary values */);
+        String expectedResponse = "Expected response from service";
 
-        Gasto gasto = new Gasto();
-        gasto.setId(1L);
-        gasto.setDescripcion("Compra de alimentos");
-        gasto.setMonto(50.0);
-        gasto.setFecha("2023-12-20");
-        gasto.setCategoria("Alimentos");
+        when(gastoService.insertarGasto(any(GastoRequestDTO.class))).thenReturn(expectedResponse);
 
-        when(gastoService.insertarGasto(any(GastoRequestDTO.class))).thenReturn(gasto);
+        // Act
+        ResponseEntity<String> responseEntity = gastoController.crearGasto(gastoRequestDTO);
 
-        ResponseEntity<Gasto> response = gastoController.crearGasto(gastoRequestDTO);
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(gasto, response.getBody());
+        // Assert
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
     }
 
     @Test
@@ -81,7 +69,7 @@ class GastoControllerTest {
     }
 
     @Test
-    void testGetExpenseById() {
+    void testObtenerGastoPorId() {
         Long id = 1L;
         GastoResponseDTO gastoResponseDTO = new GastoResponseDTO();
         gastoResponseDTO.setDescripcion("Compra de alimentos");
@@ -91,7 +79,7 @@ class GastoControllerTest {
 
         when(gastoService.obtenerGastoPorId(eq(id))).thenReturn(gastoResponseDTO);
 
-        ResponseEntity<GastoResponseDTO> response = gastoController.getExpenseById(id);
+        ResponseEntity<GastoResponseDTO> response = gastoController.obtenerGastoPorId(id);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(gastoResponseDTO, response.getBody());
@@ -99,28 +87,19 @@ class GastoControllerTest {
 
     @Test
     void testActualizarGasto() {
-        Long id = 1L;
-        GastoRequestDTO gastoRequestDTO = new GastoRequestDTO();
-        gastoRequestDTO.setDescripcion("Compra actualizada");
-        gastoRequestDTO.setMonto(60.0);
-        gastoRequestDTO.setFecha("2023-12-21");
-        gastoRequestDTO.setCategoria("Alimentos actualizados");
+        // Arrange
+        Long gastoId = 1L; // Provide the gastoId you want to update
+        GastoRequestDTO gastoRequestDTO = new GastoRequestDTO(); // Provide the updated data
+        String expectedResponse = "Gasto actualizado"; // Provide the expected response
+        when(gastoService.actualizarGasto(gastoId, gastoRequestDTO)).thenReturn(expectedResponse);
 
-        Gasto gastoActualizado = new Gasto();
-        gastoActualizado.setId(id);
-        gastoActualizado.setDescripcion("Compra actualizada");
-        gastoActualizado.setMonto(60.0);
-        gastoActualizado.setFecha("2023-12-21");
-        gastoActualizado.setCategoria("Alimentos actualizados");
+        // Act
+        ResponseEntity<String> responseEntity = gastoController.actualizarGasto(gastoId, gastoRequestDTO);
 
-        when(gastoService.actualizarGasto(eq(id), any(GastoRequestDTO.class))).thenReturn(gastoActualizado);
-
-        ResponseEntity<Gasto> response = gastoController.actualizarGasto(id, gastoRequestDTO);
-
-        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        assertEquals(gastoActualizado, response.getBody());
+        // Assert
+        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
+        assertEquals(expectedResponse, responseEntity.getBody());
     }
-
     @Test
     void testBorrarGasto() throws DAOException {
         Long id = 1L;

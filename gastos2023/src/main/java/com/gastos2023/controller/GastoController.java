@@ -4,7 +4,6 @@ package com.gastos2023.controller;
 import com.gastos2023.dto.request.GastoRequestDTO;
 import com.gastos2023.dto.response.GastoResponseDTO;
 import com.gastos2023.exception.DAOException;
-import com.gastos2023.model.Gasto;
 import com.gastos2023.service.GastoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +23,8 @@ public class GastoController {
     }
 
     @PostMapping
-    public ResponseEntity<Gasto> crearGasto(@RequestBody GastoRequestDTO gastoRequestDTO) {
-        Gasto response = gastoService.insertarGasto(gastoRequestDTO);
+    public ResponseEntity<String> crearGasto(@RequestBody GastoRequestDTO gastoRequestDTO) {
+        String response = gastoService.insertarGasto(gastoRequestDTO);
         System.out.println("GastoController: creando un gasto");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -41,7 +40,7 @@ public class GastoController {
                 .body(responses);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<GastoResponseDTO> getExpenseById(@PathVariable Long id) {
+    public ResponseEntity<GastoResponseDTO> obtenerGastoPorId(@PathVariable Long id) {
         GastoResponseDTO gastoResponseDTO = gastoService.obtenerGastoPorId(id);
         System.out.println("GastoController: obteniendo el gasto con id: " + id);
         return ResponseEntity
@@ -49,9 +48,9 @@ public class GastoController {
                 .body(gastoResponseDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Gasto> actualizarGasto(@RequestParam Long id, @RequestBody GastoRequestDTO gastoRequestDTO) {
-        Gasto response = gastoService.actualizarGasto(id, gastoRequestDTO);
+    @PutMapping("/actualizar")
+    public ResponseEntity<String> actualizarGasto(@RequestParam Long id, @RequestBody GastoRequestDTO gastoRequestDTO) {
+        String response = gastoService.actualizarGasto(id, gastoRequestDTO);
         System.out.println("GastoController: actualizando el gasto");
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
@@ -61,7 +60,7 @@ public class GastoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> borrarGasto(@PathVariable Long id) throws DAOException {
         gastoService.borrarGasto(id);
-        System.out.println("ExpenseController: eliminando el gasto");
+        System.out.println("GastoController: eliminando el gasto");
         return ResponseEntity
                 .status(HttpStatus.GONE)
                 .body("Se eliminó el gasto con id: " + id);
